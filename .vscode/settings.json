@@ -1,0 +1,10 @@
+{
+  "files.associations": {
+    "*.embeddedhtml": "html",
+    "istream": "cpp",
+    "iostream": "cpp",
+    "filesystem": "cpp",
+    "ostream": "cpp",
+    "vector": "cpp"
+  }
+}
