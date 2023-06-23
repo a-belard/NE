@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { View, Text, Alert, TouchableHighlight } from 'react-native'
+import { View, Text, Alert, TouchableOpacity } from 'react-native'
 import Screen from './Screen'
 import purchasedToken from '../api/purchasedToken';
 import { routes } from '../constants/routes';
@@ -19,8 +19,8 @@ export default function Tokens({navigation, route}) {
   return (
     <Screen><View className="flex flex-col items-center justify-center px-3 my-10">
     <View className="flex flex-row items-center justify-start mb-4">  
-    <TouchableHighlight className="w-10 h-10 flex items-center justify-center bg-white rounded-full mr-3" onPress={() => navigation.navigate(routes.welcome)}>
-    <Text className="font-bold text-lg text-[dodgerblue]">{"<"}</Text></TouchableHighlight>  
+    <TouchableOpacity className="w-10 h-10 flex items-center justify-center bg-white rounded-full mr-3" onPress={() => navigation.navigate(routes.welcome)}>
+    <Text className="font-bold text-lg text-[dodgerblue]">{"<"}</Text></TouchableOpacity>  
     <Text className="font-bold text-lg text-white">History of Meter number {route.params.meterNumber}</Text>
     </View>
         {tokens && tokens.map(token => (
