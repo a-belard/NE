@@ -70,18 +70,14 @@ const generateToken = async (amount, meterNumber) => {
  * @returns {Promise<number>} Number of lighting days.
  */
 const validateToken = async (token) => {
+  token = token.toString()
+  console.log({token})
   const purchasedToken = await PurchasedTokens.findOne({
     token,
-    token_status: token_status.NEW,
   });
   if (!purchasedToken) {
     throw { code: 400, message: "Invalid token." };
   }
-
-  // update it to USED
-  await PurchasedTokens.findByIdAndUpdate(purchasedToken._id, {
-    token_status: token_status.USED,
-  });
 
   return purchasedToken.token_value_days;
 };

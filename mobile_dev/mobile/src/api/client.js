@@ -1,7 +1,7 @@
 import { create } from "apisauce";
 
 const apiClient = create({
-  baseURL: "http://192.168.0.109:8000/api/v1",
+  baseURL: "https://ff88-105-178-113-194.ngrok-free.app/api/v1",
   timeout: 1000000,
 });
 

@@ -7,7 +7,7 @@ const validateToken = async (token) =>
   apiClient.post("/purchased-tokens/validate", { token });
 
 const getTokensByMeterNumber = async (meterNumber) =>
-  apiClient.get(`/purchased-tokens/${meterNumber}`);
+  apiClient.get(`/purchased-tokens?meterNumber=${meterNumber}`);
 
 export default {
   generateToken,
