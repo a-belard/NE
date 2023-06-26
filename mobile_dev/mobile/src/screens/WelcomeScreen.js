@@ -10,7 +10,7 @@ import { Formik } from "formik";
 import ErrorMessage from "../components/ErrorMessage";
 import { routes } from "../constants/routes";
 
-export default function WelcomeScreen({navigation}) {
+export default function WelcomeScreen({ navigation }) {
   const styles = {
     container: "flex h-full justify-center items-center flex-col px-5",
     title: "text-white text-xl font-black",
@@ -34,8 +34,9 @@ export default function WelcomeScreen({navigation}) {
       values.amount,
       values.meterNumber
     );
+    console.log(result);
     setLoading(false);
-    if(result.data.error){
+    if (result.data?.error) {
       return Alert.alert(result.data.error);
     }
     Alert.alert("Purchase successful, your token:  " + result.data.token);
@@ -43,15 +44,15 @@ export default function WelcomeScreen({navigation}) {
 
   const validateToken = async (token) => {
     setLoading(true);
-    const result = await purchasedToken.validateToken(
-      token
-    );
+    const result = await purchasedToken.validateToken(token);
     setLoading(false);
-    if(result.data.error) {
-      return Alert.alert(result.data.error)
+    if (result.data.error) {
+      return Alert.alert(result.data.error);
     }
-    Alert.alert("This token is valid for " + result.data.numberOfDays + " days");
-  }
+    Alert.alert(
+      "This token is valid for " + result.data.numberOfDays + " days"
+    );
+  };
 
   const handleOnPress = async (action) => {
     switch (action) {
@@ -97,7 +98,7 @@ export default function WelcomeScreen({navigation}) {
                     <ActivityIndicator color={colors.PRIMARY} size={"large"} />
                   ) : (
                     <AppButton
-                      title={loading ? "Purchasing":"Generate Token"}
+                      title={loading ? "Purchasing" : "Generate Token"}
                       onPress={handleSubmit}
                     />
                   )}
@@ -133,9 +134,7 @@ export default function WelcomeScreen({navigation}) {
                     onBlur={() => setFieldTouched("token")}
                     onChangeText={handleChange("token")}
                   />
-                  {touched.token && (
-                    <ErrorMessage>{errors.token}</ErrorMessage>
-                  )}
+                  {touched.token && <ErrorMessage>{errors.token}</ErrorMessage>}
 
                   {loading ? (
                     <ActivityIndicator color={colors.PRIMARY} size="large" />
@@ -159,11 +158,17 @@ export default function WelcomeScreen({navigation}) {
               initialValues={{ meterNumber: "" }}
               onSubmit={(values) => {
                 // Navigate to a different screen with the meterNumber as a parameter
-                navigation.navigate(routes.tokens, { meterNumber: values.meterNumber });
+                navigation.navigate(routes.tokens, {
+                  meterNumber: values.meterNumber,
+                });
                 setModalVisible(false);
               }}
               validationSchema={Yup.object().shape({
-                meterNumber: Yup.string().required().min(6).max(6).label("Meter number"),
+                meterNumber: Yup.string()
+                  .required()
+                  .min(6)
+                  .max(6)
+                  .label("Meter number"),
               })}
             >
               {({
@@ -187,14 +192,14 @@ export default function WelcomeScreen({navigation}) {
                   )}
 
                   <AppButton
-                      title={loading ? "Verifying" : "Get History"}
-                      onPress={handleSubmit}
-                    />               
+                    title={loading ? "Verifying" : "Get History"}
+                    onPress={handleSubmit}
+                  />
                 </View>
               )}
             </Formik>
           </View>
-        );        
+        );
         break;
       default:
         Alert.alert("Error", "Something went wrong");
