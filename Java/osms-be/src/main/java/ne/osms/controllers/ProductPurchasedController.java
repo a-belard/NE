@@ -32,16 +32,6 @@ public class ProductPurchasedController {
         return ResponseEntity.ok(ApiResponse.success(service.byLoggedInCustomer()));
     }
 
-    @GetMapping("/all/paginated")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public ResponseEntity<ApiResponse> getAll(
-            @RequestParam(value = "page", defaultValue = Constants.DEFAULT_PAGE_NUMBER) int page,
-            @RequestParam(value = "limit", defaultValue = Constants.DEFAULT_PAGE_SIZE) int limit
-    ) {
-        Pageable pageable = PageRequest.of(page, limit, Sort.Direction.DESC, "id");
-        return ResponseEntity.ok(ApiResponse.success(service.allPaginated(pageable)));
-    }
-
     @GetMapping("/all")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<ApiResponse> getAll() {

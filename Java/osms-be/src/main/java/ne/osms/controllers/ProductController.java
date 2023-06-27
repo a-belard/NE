@@ -22,7 +22,7 @@ public class ProductController {
         this.service = service;
     }
 
-    @GetMapping("/all")
+    @GetMapping("")
     public ResponseEntity<ApiResponse> getAll() {
         return ResponseEntity.ok(ApiResponse.success(service.all()));
     }

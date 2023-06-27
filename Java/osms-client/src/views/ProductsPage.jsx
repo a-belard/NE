@@ -1,13 +1,8 @@
 import PageHeader from "../components/ProductsPage/PageHeader";
-import { useEffect, useState } from "react";
-import { get, post } from "../utils/api";
-import PaginatedTable from "../components/PaginatedTable";
-import Summary from "../components/ProductsPage/Summary";
-import Pagination from "../components/ProductsPage/Pagination";
-import { FaPlus } from "react-icons/fa";
-import CreateEmployee from "../components/ProductsPage/CreateEmployee";
-import { toast } from "react-toastify";
 import ProductsList from "../components/ProductsPage/ProductsList";
+import React, { useState, useEffect } from "react";
+import { get } from "../utils/api";
+import Cart from "../components/ProductsPage/Cart";
 
 export default function ProductsPage() {
   const styles = {
@@ -16,46 +11,40 @@ export default function ProductsPage() {
     theader: "flex justify-between items-center w-full",
   };
 
-  const [products, setProducts] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
 
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(5);
+  const [cart, addToCart] = useState([]);
 
-  const [currentPage, setCurrentPage] = useState(1);
-
-  // get products
-  useEffect(() => {
-    fetchProducts();
-  });
-
-  const fetchProducts = async () => {
-    setLoading(true);
-    await get(`/products?page=${page}&limit=${limit}`, {}, true).then(
-      (data) => {
-        setProducts(data.data.data);
-        console.log(data.data.data);
-      }
+  const handleAddToCart = (item) => {
+    addToCart([...cart, item]);
+    // filter products
+    const newProducts = products.filter(
+      (product) => product.code !== item.code
     );
-    setLoading(false);
+    setProducts(newProducts);
   };
 
-  // Change the current page
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await get("/products/", {}, true);
+        setProducts(response.data.data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   return (
     <div className={styles.container}>
-      <PageHeader />
-      <ProductsList />
-      <Pagination
-        handlePageChange={handlePageChange}
-        itemsPerPage={limit}
-        totalItems={products.count}
-        currentPage={currentPage}
-      />
+      <PageHeader cart={cart} openCart={() => setIsOpen(true)} />
+      <ProductsList products={products} addToCart={handleAddToCart} />
+      <Cart cart={cart} isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </div>
   );
 }

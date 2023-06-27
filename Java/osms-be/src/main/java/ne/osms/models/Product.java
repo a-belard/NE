@@ -42,6 +42,5 @@ public class Product extends TimestampAudit {
         this.type = dto.getType();
         this.price = dto.getPrice();
         this.image = dto.getImage();
-
     }
 }

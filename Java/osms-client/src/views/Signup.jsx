@@ -13,10 +13,10 @@ import { getItem, storeItem } from "../utils/storage";
 export default function Signup() {
   const navigate = useNavigate();
   const [formValues, setformValues] = useState({
-    username: "",
+    email: "",
+    firstname: "",
     password: "",
     phone: "",
-    name: "",
   });
 
   useEffect(() => {
@@ -27,9 +27,9 @@ export default function Signup() {
 
   const handleLogin = async () => {
     try {
-      // const resp = await post("/user/login", formValues);
-      // storeItem("token", resp.data.token);
-      navigate("/dashboard");
+      const resp = await post("/users/register/as-customer/", formValues);
+      toast.success("Registered successfully, please login");
+      navigate("/login");
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -48,14 +48,14 @@ export default function Signup() {
     {
       type: "text",
       placeholder: "Names",
-      id: "name",
+      id: "firstname",
       icon: <FaUserAlt />,
       required: true,
     },
     {
       type: "text",
       placeholder: "Username",
-      id: "username",
+      id: "email",
       icon: <FaUser />,
       required: true,
     },
